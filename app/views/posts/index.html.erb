@@ -1,0 +1,7 @@
+<h1>一覧表示</h1>
+
+<%= link_to '新規投稿', new_post_path, class: 'btn btn-primary' %>
+
+<% @posts.each do |post| %>
+  <p><%= post.user.name %>:<%= post.content %></p>
+<% end %>
