@@ -1,4 +1,4 @@
-class Relationship <
+class Relationship <ApplicationRecord
 
   #active_relationshipsと対
   belongs_to :follower, class_name: "User"

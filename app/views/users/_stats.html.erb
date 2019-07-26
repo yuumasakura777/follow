@@ -4,13 +4,13 @@
   <a href="<%= following_user_path(@user)%>">
     <strong id="following" class="stat">
       <%= @user.following.count %>
-    </stong>
+    </strong>
     フォロー
   </a>
   <a href="<%= followers_user_path(@user)%>">
     <strong id="followers" class="stat">
       <%= @user.followers.count %>
-    </stong>
-    followers
+    </strong>
+    フォロワー
   </a>
 </div>
