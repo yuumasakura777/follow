@@ -10,11 +10,11 @@ Rails.application.routes.draw do
 
   resources :posts, only:[:index, :new, :create]
 
-  resources :users do
-    member do
-      get :following, :followers
-    end
-  end
+  resources :users
+
+  resources :relationships, only:[:create, :destroy]
+
+
 
 
 end

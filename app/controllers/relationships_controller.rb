@@ -1,5 +1,5 @@
-class RalationshipsController < ApplicationControlle
-  before_action :set_user,only[:create, :destroy]
+class RelationshipsController < ApplicationController
+  before_action :set_user, only:[:create, :destroy]
 
   def create
     following = current_user.follow(user)

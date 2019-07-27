@@ -2,14 +2,10 @@ class User < ApplicationRecord
 
   has_many :posts, dependent: :destroy
 
-  has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
-  has_many :following, through: :active_relationships, source: :following
-
-
-  #フォロワーの取り出し(1対多)
-  has_many :passive_relationships, class_name: "Relationship", foreign_key: "following_id", dependent: :destroy
-  #フォロワーの取り出し
-  has_many :followers, through: :passive_relationships, source: :follower
+  has_many :relationships
+  has_many :followings, through: :relationships, source: :follow
+  has_many :reverse_of_relationships, class_name: 'Relationship', foreign_key: 'follow_id'
+  has_many :followers, through: :reverse_of_relationships, source: :user
 
   has_secure_password
 
@@ -17,19 +13,22 @@ class User < ApplicationRecord
   validates :email, presence:true
   validates :password, presence:true
 
-  # ユーザーをフォローする
+  # フォローしようとしているユーザーが自分自身ではないか検証
   def follow(other_user)
-    active_relationships.create(following_id: other_user.id)
+    unless self==other_user
+      relationship=self.relationships.find_by(follow_id: other_user.id)
+    end
   end
 
-  # ユーザーをアンフォローする
+  # フォローがあればアンフォロー
   def unfollow(other_user)
-    active_relationships.find_by(following_id: other_user.id).destroy
+    relationship=self.relationships.find_by(follow_id: other_user.id)
+    relationships.destroy if relationship
   end
 
-  # 現在のユーザーがフォローしてたらtrueを返す
+  # other_userが含まれているかどうか(含まれている場合true、含まれていない場合false)
   def following?(other_user)
-    following.include?(other_user)
+    self.followings.include?(other_user)
   end
 
 end
